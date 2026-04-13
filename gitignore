@@ -1,0 +1,27 @@
+# R / RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+
+# Raw downloads and archives
+raw/
+*.tar
+*.tar.gz
+*.zip
+*.gz
+
+# Optional: keep analysis outputs locally only
+# metadata/
+# results/
+# plots/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
