@@ -1,19 +1,70 @@
-# Pollen Allergy SLIT Transcriptomics Project
+# Pathway-Level Immune Signatures Associated with Sublingual Immunotherapy in Allergic Rhinitis
 
-This repository contains the analysis workflow for a multi-scale transcriptomics study of sublingual immunotherapy (SLIT) in pollen allergy.
+This repository contains the R code used for the analyses and figure generation reported in:
+
+**Pathway-Level Immune Signatures Associated with Sublingual Immunotherapy in Allergic Rhinitis**
+
+**Christopher Wang**  
+Montgomery Blair High School, USA
+
+*The National High School Journal of Science*, 2026  
+Received: May 5, 2026  
+Accepted: July 30, 2026  
+Electronic access: September 30, 2026
+
+---
 
 ## Overview
 
-The project integrates:
+This study investigates transcriptomic patterns associated with sublingual immunotherapy (SLIT) for allergic rhinitis using complementary bulk and single-cell RNA-sequencing datasets.
 
-- Bulk RNA-seq analysis for **GSE206149**
-- Single-cell RNA-seq / VDJ analysis for **GSE200107**
-- A restart/helper script for the scRNA workflow
-- A validation script using **GSE206152**
+The analysis integrates:
 
-The analysis is organized into separate scripts and output folders so the workflow is easy to rerun and review.
+- **Bulk RNA-seq:** GSE206149
+- **Single-cell RNA-seq:** GSE200107
+- Differential expression analysis
+- Gene set enrichment analysis (GSEA)
+- Patient-level pseudobulk differential expression
+- Cell-type-specific pathway-level analysis
 
-## Repository structure
+The central finding is that SLIT-associated transcriptomic differences are more apparent at the **pathway level** than at the level of individual genes.
+
+---
+
+## Datasets
+
+### GSE206149 — Bulk RNA-seq
+
+The bulk RNA-seq dataset contains **255 samples** and was used to compare transcriptional patterns between SLIT-treated and placebo samples.
+
+Analyses included:
+
+- DESeq2 normalization
+- Differential expression analysis
+- Gene ranking by log2 fold change
+- Gene Ontology Biological Process enrichment using GSEA
+
+Only a small number of genes showed large gene-level changes, while multiple immune-related pathways showed significant enrichment.
+
+### GSE200107 — Single-cell RNA-seq
+
+The single-cell dataset contains **15 expression libraries from 7 patients** with paired pre- and post-treatment samples.
+
+Major immune-cell populations analyzed included:
+
+- CD4+ T cells
+- CD8+ T cells
+- B cells
+- Monocytes
+- Dendritic cells
+- Natural killer cells
+- Plasma cells
+
+A patient-level pseudobulk framework was used to assess cell-type-specific transcriptional responses.
+
+---
+
+## Repository Structure
 
 ```text
 .
@@ -26,44 +77,3 @@ The analysis is organized into separate scripts and output folders so the workfl
 ├── metadata/
 ├── plots/
 └── README.md
-```
-
-## What each script does
-
-**Step1_GSE206149_bulk_rnaseq_focused_v6.R**  
-Processes bulk RNA-seq for GSE206149, runs differential expression and pathway analysis, and writes output tables and plots into project folders.
-
-**Step2_GSE200107_scRNA_SLIT_pre_post_v1.R**  
-Processes the scRNA-seq / VDJ dataset, builds the Seurat object, performs clustering and annotation, and runs paired pseudobulk Post vs Pre SLIT analysis.
-
-**Step3_GSE200107_merged_restart_and_helper.R**  
-Reloads the saved Seurat object, joins layers for Seurat v5 compatibility, regenerates markers, applies manual annotation, and reruns paired pseudobulk analysis.
-
-**Step4_gse_206149_gse_206152_validation.r**  
-Validates the GSE206149 SLIT signature in GSE206152 by testing overlap, concordance, pathway consistency, and signature scoring.
-
-## Expected outputs
-
-The scripts generate:
-
-- `metadata/` for parsed GEO metadata and sample mapping tables
-- `results/` for DE tables, summary tables, RDS files, and intermediate outputs
-- `plots/` for QC plots, volcano plots, heatmaps, and validation graphics
-- `figures/` for final report-ready panels
-
-## How to run
-
-Run each script from the repository root so the relative paths resolve correctly:
-
-```r
-source("Step1_GSE206149_bulk_rnaseq_focused_v6.R")
-source("Step2_GSE200107_scRNA_SLIT_pre_post_v1.R")
-source("Step3_GSE200107_merged_restart_and_helper.R")
-source("Step4_gse_206149_gse_206152_validation.r")
-```
-
-## Notes
-
-- Large raw GEO downloads are not committed to the repository.
-- Generated analysis artifacts can be kept if you want a fully reproducible archive, but consider excluding very large raw files.
-- The figures in `figures/` are the final report-ready panels.
